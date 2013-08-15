@@ -1,0 +1,10 @@
+Fink Project Modules for simplifying the building of Fink packages.
+
+Copyright (c) 2013 Hanspeter Niederstrasser
+All Rights reserved (See LICENSE for details)
+
+These modules are meant to be sourced during a package build in order to 
+provide commonly used variables and settings to the build process.  Many 
+packaging actions are repetitive and common across packages.  Rather than 
+reinventing the wheel every time, a package would source the necessary 
+module(s) from this package and apply the provided values as needed.
