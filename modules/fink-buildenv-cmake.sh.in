@@ -33,7 +33,7 @@
 #     cmake $FINK_CMAKE_ARGS -UCMAKE_VERBOSE_MAKEFILE .
 #
 # TODO:
-# Set up a way to NOT include a variable in FINK_CMAKE_ARGS is passed from the
+# Set up a way to NOT include a variable in FINK_CMAKE_ARGS if passed from the
 # command line: eg. . %p/sbin/fink-buildenv-cmake.sh --noset=CMAKE_INSTALL_PREFIX
 # would neither define $CMAKE_INSTALL_PREFIX nor add it to $FINK_CMAKE_ARGS.
 #
