@@ -1,0 +1,11 @@
+General
+=======
+When a script gets sourced, and it sources fink-buildenv-helper.sh, check 
+if fink-buildenv-helper.sh has already been sourced in the parent script.
+
+Establish a system to NOT set a variable via the source command:
+eg. . %p/sbin/fink-buildenv-cmake.sh --noset=CMAKE_INSTALL_PREFIX would 
+neither set $CMAKE_INSTALL_PREFIX nor add it to $FINK_CMAKE_ARGS.
+
+Script specific
+===============
