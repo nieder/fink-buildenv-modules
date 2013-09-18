@@ -26,9 +26,9 @@
 # in your .info file in order to set environment variables for use in a 
 # cmake based build.
 #
-# The calculated variables are concatenated as -D defines in $CMAKE_ARGS.
+# The calculated variables are concatenated as -D defines in $FINK_CMAKE_ARGS.
 # Then, you can run cmake like so:
-#     cmake $CMAKE_ARGS .
+#     cmake $FINK_CMAKE_ARGS .
 # If you wish to unset a variable, simply undefine it:
 #     cmake $FINK_CMAKE_ARGS -UCMAKE_VERBOSE_MAKEFILE .
 #
