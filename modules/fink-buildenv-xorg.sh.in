@@ -58,3 +58,5 @@ echo "  XORG_MAKEFLAGS:              $XORG_MAKEFLAGS"
 echo "  XORG_ACLOCAL_PATH:           $XORG_ACLOCAL_PATH"
 echo "  XORG_PKG_CONFIG_PATH:        $XORG_PKG_CONFIG_PATH"
 echo ""
+
+set -v || :

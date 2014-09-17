@@ -94,3 +94,5 @@ echo "  XCODE_PREFIX:             $XCODE_PREFIX"
 echo "  SDK_PATH:                 $SDK_PATH"
 echo "  SDK_VERSION :             $SDK_VERSION"
 echo ""
+
+set -v || :
