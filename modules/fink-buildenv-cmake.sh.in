@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright (c) 2013, Hanspeter Niederstrasser
+# Copyright (c) 2014, Hanspeter Niederstrasser
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -36,8 +35,6 @@
 # Set up a way to NOT include a variable in FINK_CMAKE_ARGS if passed from the
 # command line: eg. . %p/sbin/fink-buildenv-cmake.sh --noset=CMAKE_INSTALL_PREFIX
 # would neither define $CMAKE_INSTALL_PREFIX nor add it to $FINK_CMAKE_ARGS.
-#
-# Check if fink-buildenv-helper.sh has already been sourced in the parent script.
 
 set +v || :
 
@@ -45,7 +42,8 @@ set +v || :
 export FINK_PREFIX=@FINK_PREFIX@
 export FINK_ARCH=@FINK_ARCH@
 
-. $FINK_PREFIX/sbin/fink-buildenv-helper.sh
+# load the base module
+. @FINK_PREFIX@/lib/fink-buildenv-modules/base.sh
 
 if [ -x $FINK_PREFIX/bin/cmake ]; then
 	CMAKE_COMMAND=$FINK_PREFIX/bin/cmake
@@ -80,14 +78,10 @@ for arg in CMAKE_VERBOSE_MAKEFILE CMAKE_COLOR_MAKEFILE CMAKE_BUILD_TYPE CMAKE_IN
 done
 
 echo "--------------------"
-echo "Common System Values"
+echo "Cmake Settings:"
 echo "--------------------"
 echo ""
-echo "  FINK_PREFIX:          $FINK_PREFIX"
-echo "  FINK_ARCH:            $FINK_ARCH"
-echo "  CMAKE_COMMAND:        $CMAKE_COMMAND"
-echo ""
-echo "Cmake Settings:"
+echo "  CMAKE_COMMAND:               $CMAKE_COMMAND"
 echo ""
 echo "  CMAKE_VERBOSE_MAKEFILE:      $CMAKE_VERBOSE_MAKEFILE"
 echo "  CMAKE_COLOR_MAKEFILE:        $CMAKE_COLOR_MAKEFILE"

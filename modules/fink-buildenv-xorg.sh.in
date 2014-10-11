@@ -1,5 +1,4 @@
-#!/bin/sh
-# Copyright (c) 2013, Hanspeter Niederstrasser
+# Copyright (c) 2014, Hanspeter Niederstrasser
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -32,7 +31,8 @@ set +v || :
 export FINK_PREFIX=@FINK_PREFIX@
 export FINK_ARCH=@FINK_ARCH@
 
-. $FINK_PREFIX/sbin/fink-buildenv-helper.sh
+# load the base module
+. @FINK_PREFIX@/lib/fink-buildenv-modules/base.sh
 
 XORG_PATH=$FINK_PREFIX/opt/X11/bin
 XORG_MAKEFLAGS="-w V=1"
@@ -45,13 +45,8 @@ export ACLOCAL_PATH=$XORG_ACLOCAL_PATH:$ACLOCAL_PATH
 export PKG_CONFIG_PATH=$XORG_PKG_CONFIG_PATH:$PKG_CONFIG_PATH
 
 echo "--------------------"
-echo "Common System Values"
-echo "--------------------"
-echo ""
-echo "  FINK_PREFIX:          $FINK_PREFIX"
-echo "  FINK_ARCH:            $FINK_ARCH"
-echo ""
 echo "Xorg settings prepended to the system equivalent:"
+echo "--------------------"
 echo ""
 echo "  XORG_PATH:                   $XORG_PATH"
 echo "  XORG_MAKEFLAGS:              $XORG_MAKEFLAGS"
