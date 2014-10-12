@@ -45,52 +45,7 @@ export FINK_ARCH=@FINK_ARCH@
 # load the base module
 . @FINK_PREFIX@/lib/fink-buildenv-modules/base.sh
 
-if [ -x $FINK_PREFIX/bin/cmake ]; then
-	CMAKE_COMMAND=$FINK_PREFIX/bin/cmake
-else
-	echo "No cmake command was found."
-	echo "Please make sure cmake is added to the BuildDepends for this package."
-	echo "Exiting..."
-	exit 1
-fi
-
-export CMAKE_VERBOSE_MAKEFILE=ON
-export CMAKE_COLOR_MAKEFILE=ON
-export CMAKE_BUILD_TYPE=Release
-export CMAKE_INSTALL_PREFIX=$FINK_PREFIX
-export CMAKE_INSTALL_NAME_DIR=${FINK_PREFIX}/lib
-export CMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_DEPLOYMENT_TARGET
-export CMAKE_FIND_FRAMEWORK=LAST
-
-if [ "$SDK_PATH" != "" ]; then
-	export CMAKE_OSX_SYSROOT=$SDK_PATH
-else
-	export CMAKE_OSX_SYSROOT=/
-	export CMAKE_OSX_DEPLOYMENT_TARGET=""
-fi	
-
-# There must be a better way to do this
-for arg in CMAKE_VERBOSE_MAKEFILE CMAKE_COLOR_MAKEFILE CMAKE_BUILD_TYPE CMAKE_INSTALL_PREFIX CMAKE_INSTALL_NAME_DIR CMAKE_OSX_DEPLOYMENT_TARGET CMAKE_FIND_FRAMEWORK; do
-	# if variable has been set, then add a -Define to FINK_CMAKE_ARGS
-	if [ -n "${!arg+1}" ]; then
-		export FINK_CMAKE_ARGS="$FINK_CMAKE_ARGS -D$arg=${!arg}"
-	fi
-done
-
-echo "--------------------"
-echo "Cmake Settings:"
-echo "--------------------"
-echo ""
-echo "  CMAKE_COMMAND:               $CMAKE_COMMAND"
-echo ""
-echo "  CMAKE_VERBOSE_MAKEFILE:      $CMAKE_VERBOSE_MAKEFILE"
-echo "  CMAKE_COLOR_MAKEFILE:        $CMAKE_COLOR_MAKEFILE"
-echo "  CMAKE_BUILD_TYPE:            $CMAKE_BUILD_TYPE"
-echo "  CMAKE_INSTALL_PREFIX:        $CMAKE_INSTALL_PREFIX"
-echo "  CMAKE_INSTALL_NAME_DIR:      $CMAKE_INSTALL_NAME_DIR"
-echo "  CMAKE_OSX_SYSROOT:           $CMAKE_OSX_SYSROOT"
-echo "  CMAKE_OSX_DEPLOYMENT_TARGET: $CMAKE_OSX_DEPLOYMENT_TARGET"
-echo "  CMAKE_FIND_FRAMEWORK:        $CMAKE_FIND_FRAMEWORK"
-echo ""
+# load the cmake module
+. @FINK_PREFIX@/lib/fink-buildenv-modules/cmake.sh
 
 set -v || :

@@ -1,0 +1,75 @@
+# Copyright (c) 2014, Hanspeter Niederstrasser
+# All rights reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Cmake module
+# Sets standard cmake parameters
+# To use, source from other Buildenv Modules
+
+if [ -x $FINK_PREFIX/bin/cmake ]; then
+	CMAKE_COMMAND=$FINK_PREFIX/bin/cmake
+else
+	echo "No cmake command was found."
+	echo "Please make sure cmake is added to the BuildDepends for this package."
+	echo "Exiting..."
+	exit 1
+fi
+
+export CMAKE_BUILD_TYPE=Release
+export CMAKE_COLOR_MAKEFILE=ON
+export CMAKE_FIND_FRAMEWORK=LAST
+export CMAKE_INSTALL_NAME_DIR=${FINK_PREFIX}/lib
+export CMAKE_INSTALL_PREFIX=$FINK_PREFIX
+export CMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_DEPLOYMENT_TARGET
+export CMAKE_VERBOSE_MAKEFILE=ON
+
+if [ "$SDK_PATH" != "" ]; then
+	export CMAKE_OSX_SYSROOT=$SDK_PATH
+else
+	export CMAKE_OSX_SYSROOT=/
+	export CMAKE_OSX_DEPLOYMENT_TARGET=""
+fi	
+
+# There must be a better way to do this
+for arg in CMAKE_BUILD_TYPE CMAKE_COLOR_MAKEFILE CMAKE_FIND_FRAMEWORK CMAKE_INSTALL_NAME_DIR CMAKE_INSTALL_PREFIX CMAKE_OSX_DEPLOYMENT_TARGET CMAKE_VERBOSE_MAKEFILE; do
+	# if variable has been set, then add a -Define to FINK_CMAKE_ARGS
+	if [ -n "${!arg+1}" ]; then
+		export FINK_CMAKE_ARGS="$FINK_CMAKE_ARGS -D$arg=${!arg}"
+	fi
+done
+
+echo "--------------------"
+echo "Cmake Settings:"
+echo "--------------------"
+echo ""
+echo "  CMAKE_COMMAND:               $CMAKE_COMMAND"
+echo ""
+echo "  CMAKE_BUILD_TYPE:            $CMAKE_BUILD_TYPE"
+echo "  CMAKE_COLOR_MAKEFILE:        $CMAKE_COLOR_MAKEFILE"
+echo "  CMAKE_FIND_FRAMEWORK:        $CMAKE_FIND_FRAMEWORK"
+echo "  CMAKE_INSTALL_NAME_DIR:      $CMAKE_INSTALL_NAME_DIR"
+echo "  CMAKE_INSTALL_PREFIX:        $CMAKE_INSTALL_PREFIX"
+echo "  CMAKE_OSX_DEPLOYMENT_TARGET: $CMAKE_OSX_DEPLOYMENT_TARGET"
+echo "  CMAKE_OSX_SYSROOT:           $CMAKE_OSX_SYSROOT"
+echo "  CMAKE_VERBOSE_MAKEFILE:      $CMAKE_VERBOSE_MAKEFILE"
+echo ""
+echo "  FINK_CMAKE_ARGS:             $FINK_CMAKE_ARGS"
+echo ""
