@@ -1,0 +1,18 @@
+ChangeLog for fink-buildenv-modules
+
+Version 0.1.2
+January 12, 2015
+----------------
+* New KF5 module
+* Move commonly used pieces into submodules that are sourced by the master scripts as needed.
+
+Version 0.1.1
+September 17, 2014
+------------------
+* Bugfix release for verbosity issues
+
+Version 0.1.0
+September 18, 2013
+------------------
+* Initial release.
+* Includes base, cmake, and xorg modules
