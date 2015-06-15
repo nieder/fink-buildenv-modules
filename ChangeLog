@@ -1,5 +1,10 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.3
+June 14, 2015
+-------------
+* Add X11_*_DIR to base module to help find X11 in the different OS X versions.
+
 Version 0.1.2
 January 12, 2015
 ----------------
