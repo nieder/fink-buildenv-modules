@@ -55,6 +55,16 @@ if [ "$SDK_PATH" ] && [ x"$SDK_VERSION" != x"$MACOSX_DEPLOYMENT_TARGET" ]; then
 	exit 1
 fi
 
+if [ $DARWIN_MAJOR_VERSION -ge 12 ]; then
+	export X11_BASE_DIR=/opt/X11
+	export X11_INCLUDE_DIR=/opt/X11/include
+	export X11_LIBRARY_DIR=/opt/X11/lib
+else
+	export X11_BASE_DIR=/usr/X11
+	export X11_INCLUDE_DIR=/usr/X11/include
+	export X11_LIBRARY_DIR=/usr/X11/lib
+fi
+
 # Fink Settings
 export FINK_PREFIX=@FINK_PREFIX@
 export FINK_ARCH=@FINK_ARCH@
@@ -78,4 +88,7 @@ echo "  XCODE_VERSION:            $XCODE_VERSION"
 echo "  XCODE_PREFIX:             $XCODE_PREFIX"
 echo "  SDK_PATH:                 $SDK_PATH"
 echo "  SDK_VERSION :             $SDK_VERSION"
+echo "  X11_BASE_DIR:             $X11_BASE_DIR"
+echo "  X11_INCLUDE_DIR:          $X11_INCLUDE_DIR"
+echo "  X11_LIBRARY_DIR :         $X11_LIBRARY_DIR"
 echo ""
