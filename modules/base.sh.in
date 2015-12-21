@@ -43,8 +43,8 @@ fi
 if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 	export XCODE_VERSION=`xcodebuild -version | head -n 1 | cut -f 2 -d ' '`
 	export XCODE_PREFIX=`xcode-select -print-path`
-	export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} | grep ^Path: | cut -d\  -f2`
-	export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} | grep ^SDKVersion: | cut -d\  -f2`
+	export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
+	export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
 fi
 
 # Do SDK_PATH and MACOSX_DEPLOYMENT_TARGET match?
