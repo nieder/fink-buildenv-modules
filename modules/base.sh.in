@@ -32,7 +32,8 @@ export DARWIN_MINOR_VERSION=`printenv DARWIN_VERSION | cut -d. -f2`
 export OSX_VERSION=`sw_vers -productVersion`
 export OSX_MAJOR_VERSION=`printenv OSX_VERSION | cut -d. -f1-2`
 
-if [ x"$OSX_MAJOR_VERSION" != x"$MACOSX_DEPLOYMENT_TARGET" ]; then
+# If M_D_T is set, it should match the system version
+if [ "$MACOSX_DEPLOYMENT_TARGET" ] && [ x"$OSX_MAJOR_VERSION" != x"$MACOSX_DEPLOYMENT_TARGET" ]; then
 	echo "OSX_MAJOR_VERSION is set to: $OSX_MAJOR_VERSION"
 	echo "MACOSX_DEPLOYMENT_TARGET is set to: $MACOSX_DEPLOYMENT_TARGET"
 	echo "Please fix this mismatch. Exiting..."
@@ -43,16 +44,29 @@ fi
 if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 	export XCODE_VERSION=`xcodebuild -version | head -n 1 | cut -f 2 -d ' '`
 	export XCODE_PREFIX=`xcode-select -print-path`
-	export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
-	export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
+	if [ `dpkg --compare-versions $XCODE_VERSION lt 7` ]; then
+		export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
+		export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
+	else
+		export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path`
+		export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion`
+	fi
 fi
 
 # Do SDK_PATH and MACOSX_DEPLOYMENT_TARGET match?
-if [ "$SDK_PATH" ] && [ x"$SDK_VERSION" != x"$MACOSX_DEPLOYMENT_TARGET" ]; then
-	echo "SDK Version is: $SDK_VERSION"
-	echo "MACOSX_DEPLOYMENT_TARGET is set to: $MACOSX_DEPLOYMENT_TARGET"
-	echo "Please fix this mismatch. Exiting..."
-	exit 1
+if [ `dpkg --compare-versions $XCODE_VERSION lt 7` ]; then
+	# Starting with Xcode 7, 10.10 only had the 10.11 SDK, not the 10.10 SDK.
+	# This branch is only for Xcode < 7, where M_D_T and SDK should match
+	if [ "$SDK_PATH" ] && [ x"$SDK_VERSION" != x"$MACOSX_DEPLOYMENT_TARGET" ]; then
+		# Only compare SDK to M_D_T, iff we have an SDK set.
+		# SDK and M_D_T should match if Xcode < 7
+		echo "SDK Version is: $SDK_VERSION"
+		echo "MACOSX_DEPLOYMENT_TARGET is set to: $MACOSX_DEPLOYMENT_TARGET"
+		echo "Please fix this mismatch. Exiting..."
+		exit 1
+	fi
+#else
+	# We are at Xcode >= 7, so 10.10 is likely to only have the 10.11 SDK
 fi
 
 if [ $DARWIN_MAJOR_VERSION -ge 12 ]; then
