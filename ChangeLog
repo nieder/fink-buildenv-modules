@@ -1,5 +1,10 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.4
+December 22, 2015
+-----------------
+* Improve the way the SDK is detected, especially when Xcode 7 is present.
+
 Version 0.1.3
 June 14, 2015
 -------------
