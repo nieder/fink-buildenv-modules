@@ -47,9 +47,12 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 	if [ `dpkg --compare-versions $XCODE_VERSION lt 7` ]; then
 		export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
 		export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
-	else
+	elif [ `dpkg --compare-versions $XCODE_VERSION lt 8` ]; then
 		export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path`
 		export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion`
+	else
+		export SDK_PATH=`xcodebuild -version -sdk macosx10.12 Path`
+		export SDK_VERSION=`xcodebuild -version -sdk macosx10.12 SDKVersion`
 	fi
 fi
 
