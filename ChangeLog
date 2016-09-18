@@ -1,5 +1,10 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.5
+September 17, 2016
+------------------
+* Make sure we detect the correct SDK (macosx10.12) in Xcode 8.
+
 Version 0.1.4
 December 22, 2015
 -----------------
