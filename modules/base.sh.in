@@ -43,17 +43,25 @@ fi
 # Xcode
 if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 	export XCODE_VERSION=`xcodebuild -version | head -n 1 | cut -f 2 -d ' '`
+	export XCODE_MAJOR_VERSION=`printenv XCODE_VERSION | cut -d. -f1`
 	export XCODE_PREFIX=`xcode-select -print-path`
-	if [ `dpkg --compare-versions $XCODE_VERSION lt 7` ]; then
-		export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
-		export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
-	elif [ `dpkg --compare-versions $XCODE_VERSION lt 8` ]; then
-		export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path`
-		export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion`
-	else
-		export SDK_PATH=`xcodebuild -version -sdk macosx10.12 Path`
-		export SDK_VERSION=`xcodebuild -version -sdk macosx10.12 SDKVersion`
-	fi
+	case $XCODE_MAJOR_VERSION in
+		[1-6])
+			export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
+			;;
+		7)
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion`
+			;;
+		8)
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.12 Path`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.12 SDKVersion`
+			;;
+		*)
+			echo "Unsupported Xcode version: " $XCODE_VERSION
+			;;
+	esac
 fi
 
 # Do SDK_PATH and MACOSX_DEPLOYMENT_TARGET match?
