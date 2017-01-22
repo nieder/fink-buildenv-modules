@@ -1,5 +1,11 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.6
+January 21, 2016
+----------------
+* Change Xcode detection logic.
+* Add new KF5 script for Frameworks >= 5.29.
+
 Version 0.1.5
 September 17, 2016
 ------------------
