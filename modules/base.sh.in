@@ -42,21 +42,31 @@ fi
 
 # Xcode
 if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
-	export XCODE_VERSION=`xcodebuild -version | head -n 1 | cut -f 2 -d ' '`
+	export XCODE_VERSION=`xcodebuild -version 2>/dev/null | head -n 1 | cut -f 2 -d ' '`
+	# xcodebuild gives no value if only CLI is installed
+	if [ -z $XCODE_VERSION ]; then
+		# this receipt only works with 10.9 and up
+		export CLI_TOOLS_ONLY=true
+		export XCODE_VERSION=`pkgutil --pkg-info com.apple.pkg.CLTools_Executables | grep version: | cut -d: -f2 | cut -f1-2 -d\. | tr -d '[:space:]'`
+	fi
 	export XCODE_MAJOR_VERSION=`printenv XCODE_VERSION | cut -d. -f1`
 	export XCODE_PREFIX=`xcode-select -print-path`
 	case $XCODE_MAJOR_VERSION in
 		[1-6])
-			export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path`
-			export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion`
+			export SDK_PATH=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx${OSX_MAJOR_VERSION} SDKVersion 2>/dev/null`
 			;;
 		7)
-			export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path`
-			export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion`
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.11 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.11 SDKVersion 2>/dev/null`
 			;;
 		8)
-			export SDK_PATH=`xcodebuild -version -sdk macosx10.12 Path`
-			export SDK_VERSION=`xcodebuild -version -sdk macosx10.12 SDKVersion`
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.12 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.12 SDKVersion 2>/dev/null`
+			;;
+		9)
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.13 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.13 SDKVersion 2>/dev/null`
 			;;
 		*)
 			echo "Unsupported Xcode version: " $XCODE_VERSION
