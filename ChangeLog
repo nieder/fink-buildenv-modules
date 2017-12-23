@@ -1,5 +1,11 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.7
+December 22, 2017
+-----------------
+* Detect Xcode9.
+* Detect the Xcode version when only the CLI tools are installed.
+
 Version 0.1.6
 January 21, 2016
 ----------------
