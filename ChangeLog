@@ -1,5 +1,10 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.8
+March 31, 2020
+-----------------
+* Detect Xcode10 and Xcode11.
+
 Version 0.1.7
 December 22, 2017
 -----------------
