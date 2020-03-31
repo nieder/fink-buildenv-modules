@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Hanspeter Niederstrasser
+# Copyright (c) 2020, Hanspeter Niederstrasser
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -67,6 +67,14 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 		9)
 			export SDK_PATH=`xcodebuild -version -sdk macosx10.13 Path 2>/dev/null`
 			export SDK_VERSION=`xcodebuild -version -sdk macosx10.13 SDKVersion 2>/dev/null`
+			;;
+		10)
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.14 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.14 SDKVersion 2>/dev/null`
+			;;
+		11)
+			export SDK_PATH=`xcodebuild -version -sdk macosx10.15 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx10.15 SDKVersion 2>/dev/null`
 			;;
 		*)
 			echo "Unsupported Xcode version: " $XCODE_VERSION
