@@ -76,6 +76,11 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 			export SDK_PATH=`xcodebuild -version -sdk macosx10.15 Path 2>/dev/null`
 			export SDK_VERSION=`xcodebuild -version -sdk macosx10.15 SDKVersion 2>/dev/null`
 			;;
+		12)
+			# Xcode 12 can have any of the 11.0, 11.1, or 11.3 SDKs. So walk from high to low until we find one.
+			export SDK_PATH=`xcodebuild -version -sdk macosx11.3 Path 2>/dev/null || xcodebuild -version -sdk macosx11.1 Path 2>/dev/null || xcodebuild -version -sdk macosx11.0 Path 2>/dev/null`
+			export SDK_VERSION=`xcodebuild -version -sdk macosx11.3 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.1 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.0 SDKVersion 2>/dev/null`
+			;;
 		*)
 			echo "Unsupported Xcode version: " $XCODE_VERSION
 			;;
