@@ -82,7 +82,7 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 			export SDK_VERSION=`xcodebuild -version -sdk macosx11.3 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.1 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.0 SDKVersion 2>/dev/null`
 			;;
 		*)
-			echo "Unsupported Xcode version: " $XCODE_VERSION
+			echo "Warning: Unsupported Xcode version: " $XCODE_VERSION
 			;;
 	esac
 fi
