@@ -1,0 +1,114 @@
+# Copyright (c) 2021, Hanspeter Niederstrasser
+# All rights reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Usage:
+# Source this script file within any of {Patch,Compile,Install,Test}Script
+# in your .info file in order to set environment variables for use in a 
+# KDE Frameworks 5 based build.
+#
+# The calculated variables are concatenated as -D defines in $KF5_CMAKE_ARGS.
+# Then, you can run cmake like so:
+#     cmake $KF5_CMAKE_ARGS .
+# If you wish to unset a variable, simply undefine it:
+#     cmake $KF5_CMAKE_ARGS -UPYTHON_EXECUTABLE .
+#
+# TODO:
+# Set up a way to NOT include a variable in KF5_CMAKE_ARGS if passed from the
+# command line: eg. . %p/sbin/fink-buildenv-kf5.sh --noset=CMAKE_INSTALL_PREFIX
+# would neither define $CMAKE_INSTALL_PREFIX nor add it to $KF5_CMAKE_ARGS.
+
+set +v || :
+
+# Fink Settings
+export FINK_PREFIX=@FINK_PREFIX@
+export FINK_ARCH=@FINK_ARCH@
+
+# load the base module
+. @FINK_PREFIX@/lib/fink-buildenv-modules/base.sh
+
+# load the cmake module
+. @FINK_PREFIX@/lib/fink-buildenv-modules/cmake.sh
+
+export QTDIR=$FINK_PREFIX/lib/qt5-mac
+export KF5=$QTDIR
+export XDG_DATA_DIRS=$KF5/share:$XDG_DATA_DIRS:/usr/share
+export XDG_CONFIG_DIRS=$KF5/etc/xdg:$XDG_CONFIG_DIRS:/etc/xdg
+export PATH=$KF5/bin:$QTDIR/bin:$PATH
+export QT_PLUGIN_PATH=$KF5/plugins:$KF5/lib64/plugins:$QTDIR/plugins:$QT_PLUGIN_PATH
+export QML2_IMPORT_PATH=$KF5/lib/qml:$KF5/lib64/qml:$QTDIR/share/qt5/qml
+export QML_IMPORT_PATH=$QML2_IMPORT_PATH
+export KDE_SESSION_VERSION=5
+export KDE_FULL_SESSION=true
+export CMAKE_PREFIX_PATH=$KF5:$QTDIR:$CMAKE_PREFIX_PATH
+
+export BOOST_INCLUDEDIR=$FINK_PREFIX/opt/boost-1_68/include
+export BOOST_ROOT=$FINK_PREFIX/opt/boost-1_68
+export BUILD_TESTING=OFF
+export BZIP2_INCLUDE_DIR=$FINK_PREFIX/include
+export BZIP2_LIBRARY_RELEASE=$FINK_PREFIX/lib/libbz2.dylib
+export CMAKE_INSTALL_LIBEXECDIR=$QTDIR/libexec
+export CMAKE_INSTALL_PREFIX=$QTDIR
+#export ECM_MKSPECS_INSTALL_DIR=$KF5/share/mkspecs/modules
+export KDE_INSTALL_BUNDLEDIR=$FINK_PREFIX/Applications/KF5
+export KDE_INSTALL_USE_QT_SYS_PATHS=ON
+export LIBLZMA_LIBRARY=$FINK_PREFIX/lib/liblzma.dylib
+export LIBLZMA_INCLUDE_DIR=$FINK_PREFIX/include
+export PYTHON_EXECUTABLE=$FINK_PREFIX/bin/python3.7
+
+# ENVVARs helpful for token replacement
+export KF5_BINDIR=$KF5/bin
+export KF5_ETCDIR=$KF5/etc
+export KF5_INCLUDEDIR=$KF5/include
+export KF5_LIBDIR=$KF5/lib
+export KF5_LIBEXECDIR=$KF5/libexec
+export KF5_SHAREDIR=$KF5/share
+
+for arg in BOOST_INCLUDEDIR BOOST_ROOT BUILD_TESTING BZIP2_INCLUDE_DIR BZIP2_LIBRARY_RELEASE CMAKE_INSTALL_LIBEXECDIR CMAKE_INSTALL_PREFIX KDE_INSTALL_BUNDLEDIR KDE_INSTALL_USE_QT_SYS_PATHS LIBLZMA_INCLUDE_DIR LIBLZMA_LIBRARY PYTHON_EXECUTABLE; do
+	# if variable has been set, then add a -Define to KF5_CMAKE_ARGS
+	if [ -n "${!arg+1}" ]; then
+		export KF5_CMAKE_ARGS="$KF5_CMAKE_ARGS -D$arg=${!arg}"
+	fi
+done
+
+echo "--------------------"
+echo "KDE F5 Settings:"
+echo "--------------------"
+echo ""
+echo "  KF5 install location:         $KF5"
+echo ""
+echo "  BOOST_INCLUDEDIR:             $BOOST_INCLUDEDIR"
+echo "  BOOST_ROOT:                   $BOOST_ROOT"
+echo "  BUILD_TESTING:                $BUILD_TESTING"
+echo "  BZIP2_INCLUDE_DIR:            $BZIP2_INCLUDE_DIR"
+echo "  BZIP2_LIBRARY_RELEASE:        $BZIP2_LIBRARY_RELEASE"
+echo "  CMAKE_INSTALL_LIBEXECDIR:     $CMAKE_INSTALL_LIBEXECDIR"
+echo "  CMAKE_INSTALL_PREFIX:         $CMAKE_INSTALL_PREFIX"
+echo "  KDE_INSTALL_BUNDLEDIR:        $KDE_INSTALL_BUNDLEDIR"
+echo "  KDE_INSTALL_USE_QT_SYS_PATHS: $KDE_INSTALL_USE_QT_SYS_PATHS"
+echo "  LIBLZMA_INCLUDE_DIR:          $LIBLZMA_INCLUDE_DIR"
+echo "  LIBLZMA_LIBRARY:              $LIBLZMA_LIBRARY"
+echo "  PYTHON_EXECUTABLE:            $PYTHON_EXECUTABLE"
+echo ""
+echo "  KF5_CMAKE_ARGS:              $KF5_CMAKE_ARGS"
+echo ""
+
+set -v || :
