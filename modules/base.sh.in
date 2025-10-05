@@ -96,6 +96,62 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 			export SDK_PATH=`xcodebuild -version -sdk macosx11.3 Path 2>/dev/null || xcodebuild -version -sdk macosx11.1 Path 2>/dev/null || xcodebuild -version -sdk macosx11.0 Path 2>/dev/null`
 			export SDK_VERSION=`xcodebuild -version -sdk macosx11.3 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.1 SDKVersion 2>/dev/null || xcodebuild -version -sdk macosx11.0 SDKVersion 2>/dev/null`
 			;;
+		13)
+			# Xcode 13 can have any of the 12.3 12.1 12.0 11.3 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 12.3 12.1 12.0 11.3; do
+				get_sdk_version_path $sdk_test_ver
+				if [[ $? -eq 0 ]]; then
+					break
+				else
+					continue
+				fi
+			done
+			;;
+		14)
+			# Xcode 14 can have any of the 13.3 13.1 13.0 12.3 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 13.3 13.1 13.0 12.3; do
+				get_sdk_version_path $sdk_test_ver
+				if [[ $? -eq 0 ]]; then
+					break
+				else
+					continue
+				fi
+			done
+			;;
+		15)
+			# Xcode 15 can have any of the 14.5 14.4 14.2 14.0 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 14.5 14.4 14.2 14.0; do
+				get_sdk_version_path $sdk_test_ver
+				if [[ $? -eq 0 ]]; then
+					break
+				else
+					continue
+				fi
+			done
+			;;
+		16)
+			# Xcode 16 can have any of the 15.5 15.4 15.2 15.1 15.0 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 15.5 15.4 15.2 15.1 15.0; do
+				get_sdk_version_path $sdk_test_ver
+				if [[ $? -eq 0 ]]; then
+					break
+				else
+					continue
+				fi
+			done
+			;;
+		26)
+			# Xcode 16 can have any of the 26.0 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 26.0; do
+				get_sdk_version_path $sdk_test_ver
+				if [[ $? -eq 0 ]]; then
+					break
+				else
+					continue
+				fi
+			done
+			;;
+			;;
 		*)
 			echo "Warning: Unsupported Xcode version: " $XCODE_VERSION
 			;;
