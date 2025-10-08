@@ -157,7 +157,6 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 				fi
 			done
 			;;
-			;;
 		*)
 			echo "Warning: Unsupported Xcode version: " $XCODE_VERSION
 			;;
