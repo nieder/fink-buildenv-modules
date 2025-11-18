@@ -147,8 +147,8 @@ if [ -x /usr/bin/xcodebuild ] && [ -x /usr/bin/xcode-select ]; then
 			done
 			;;
 		26)
-			# Xcode 16 can have any of the 26.0 SDKs. So walk from high to low until we find one.
-			for sdk_test_ver in 26.0; do
+			# Xcode 16 can have any of the 26.2 - 26.0 SDKs. So walk from high to low until we find one.
+			for sdk_test_ver in 26.2 26.1 26.0; do
 				get_sdk_version_path $sdk_test_ver
 				if [[ $? -eq 0 ]]; then
 					break
