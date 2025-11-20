@@ -45,10 +45,8 @@ get_sdk_version_path () {
 # input: an SDK version (numbers only)
 # output: SDK_PATH and SDK_VERSION
 # codes: 0 if successfully set, 1 if SDK doesn't exist
-	SDK_PATH=`xcodebuild -version -sdk macosx${sdk_test_ver} Path 2>/dev/null`
-	if [[ $? -eq 0 ]]; then
-		# don't export SDK_PATH above because that affects what $? belongs to
-		export SDK_PATH
+	if xcodebuild -version -sdk macosx${sdk_test_ver} >/dev/null 2>&1; then
+		export SDK_PATH=`xcodebuild -version -sdk macosx${sdk_test_ver} Path 2>/dev/null`
 		export SDK_VERSION=`xcodebuild -version -sdk macosx${sdk_test_ver} SDKVersion 2>/dev/null`
 		return 0
 	else
