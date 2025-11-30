@@ -1,5 +1,10 @@
 ChangeLog for fink-buildenv-modules
 
+Version 0.1.12
+November 30, 2025
+-----------------
+* Don't error out of the script when an SDK doesn't exist during the search.
+
 Version 0.1.11
 November 18, 2025
 -----------------
